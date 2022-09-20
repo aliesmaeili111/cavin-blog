@@ -1,0 +1,193 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block main %}
+
+        <section id="hero" class="s-hero">
+
+            <div class="s-hero__slider">
+
+                <div class="s-hero__slide">
+
+                    <div class="s-hero__slide-bg"
+                        style="background-image: url('{% static 'blog/images/slide1-bg-3000.jpg' %}');"></div>
+
+                    
+                </div> <!-- end s-hero__slide -->
+
+                <div class="s-hero__slide">
+
+                    <div class="s-hero__slide-bg"
+                        style="background-image: url('{% static 'blog/images/slide2-bg-3000.jpg' %}' );"></div>
+
+                    
+                </div> <!-- end s-hero__slide -->
+
+                <div class="s-hero__slide">
+
+                    <div class="s-hero__slide-bg"
+                        style="background-image: url('{% static 'blog/images/slide3-bg-3000.jpg' %}');"></div>
+
+
+                </div> <!-- end s-hero__slide -->
+
+            </div> <!-- end s-hero__slider -->
+
+            <div class="s-hero__social hide-on-mobile-small">
+                <p>Follow</p>
+                <span></span>
+                <ul class="s-hero__social-icons">
+                    <li><a href="#0"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+                    <li><a href="#0"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="#0"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+                    <li><a href="#0"><i class="fab fa-dribbble" aria-hidden="true"></i></a></li>
+                </ul>
+            </div> <!-- end s-hero__social -->
+
+            <div class="nav-arrows s-hero__nav-arrows">
+                <button class="s-hero__arrow-prev">
+                    <svg viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" width="15" height="15">
+                        <path d="M1.5 7.5l4-4m-4 4l4 4m-4-4H14" stroke="currentColor"></path>
+                    </svg>
+                </button>
+                <button class="s-hero__arrow-next">
+                    <svg viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg" width="15" height="15">
+                        <path d="M13.5 7.5l-4-4m4 4l-4 4m4-4H1" stroke="currentColor"></path>
+                    </svg>
+                </button>
+            </div> <!-- end s-hero__arrows -->
+
+        </section>
+
+
+
+    <!-- content
+    ================================================== -->
+    <section class="s-content">
+
+
+        {% block header %}
+        
+        {% endblock %}
+        
+
+        <!-- masonry
+        ================================================== -->
+        <div class="s-bricks s-bricks--half-top-padding">
+
+            <div class="masonry">
+                <div class="bricks-wrapper h-group">
+
+                    <div class="grid-sizer"></div>
+
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    {% for article in object_list %}
+                        <article class="brick entry" data-aos="fade-up">
+        
+                            <div class="entry__thumb">
+                                <a href="{% url 'blog:detail' article.slug %}" class="thumb-link">
+                                    <img src="{{article.thumbnail.url}}" width="100%"
+                                        srcset="{{article.thumbnail.url}} 1x, {{article.thumbnail.url}} 2x" alt="{{article.title}}">
+                                    </a>
+                                </div> <!-- end entry__thumb -->
+                                
+                                {% if article.is_special %}
+
+                                    <span class="byline">ویژه</span>
+
+                                {% endif %}
+                            <div class="entry__text">
+                                <div class="entry__header">
+                                    <h1 class="entry__title"><a href="{% url 'blog:detail' article.slug %}" style="font-size:20px;">{{article.title|truncatewords:10}}</a></h1>
+                                    
+                                    <div class="entry__meta">
+                                        <span class="byline">نوشته شده توسط:
+                                            <span class='author'>
+                                                <a href="{% url 'blog:author' article.author %}">{{article.author.get_full_name}}</a>
+                                        </span>
+                                    </span>
+                                        <span class="cat-links">
+                                            {% for cat in article.category.active %}
+                                                <a href="{% url 'blog:category' cat.slug %}">,{{cat.title}}</a>
+                                            {% endfor %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="entry__excerpt">
+                                    <p>
+                                     {{article.description|safe|truncatewords:22}}
+                                    </p>
+                                </div>
+                                <a class="entry__more-link" style="float:left;" href="{% url 'blog:detail' article.slug %}">بیشتر</a>
+                                <a class="entry__more-link" href="{% url 'blog:detail' article.slug %}">{{article.jpublish}}</a>
+                            </div> <!-- end entry__text -->
+                        
+                        </article> <!-- end article -->
+
+                        {% empty %}
+                        <h1 class="entry__title">متاسفانه محتوایی برای نمایش وجود ندارد.</h1>
+                    {% endfor %}
+                    
+
+                </div> <!-- end brick-wrapper -->
+
+            </div> <!-- end masonry -->
+
+            <div class="row">
+                <div class="column large-12">
+                    <nav class="pgn">
+                        {% if page_obj.has_other_pages %}
+                        <ul>
+                            {% if page_obj.has_previous %}
+                                <li>
+                                    <a class="pgn__prev" href="{% block previous_page_url %} {% endblock%}">
+                                        قبلی
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a class="pgn__prev">
+                                        
+                                    </a>
+                                </li>
+                            {% endif %}
+                          
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == 1 %}
+                                    <li><a class="pgn__num" href="{% block range_1 %} {% endblock %}">{{i}}</a></li>
+                                {% else %}
+                                    <li><a class="pgn__num" href="{% block range_2 %} {% endblock %}">{{i}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                       
+                            {% if page_obj.has_next %}
+                                <li>
+                                    <a class="pgn__next" href="{% block next_page_url %} {% endblock %}">
+                                        بعدی
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a class="pgn__next">
+                                        
+                                    </a>
+                                </li>
+                            {% endif %}
+
+
+                        </ul>
+                    {% endif %}
+                    </nav> <!-- end pgn -->
+                </div> <!-- end column -->
+            </div> <!-- end row -->
+
+        </div> <!-- end s-bricks -->
+
+    </section> <!-- end s-content -->
+
+{% endblock %}

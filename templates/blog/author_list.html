@@ -1,0 +1,34 @@
+{% extends 'blog/list.html' %}
+
+{% block header %}
+<!-- page header
+        ================================================== -->
+        <div class="s-pageheader">
+            <div class="row">
+                <div class="column large-12">
+                    <h1 class="page-title">
+                        <span class="page-title__small-type" style="font-size:30px;">نویسنده : <a href="{% url 'blog:author' author.username %}">{{author.get_full_name}}</a></span><br>
+                    </h1>
+                </div>
+            </div>
+        </div> 
+<!-- end s-pageheader-->
+{% endblock %}
+
+
+
+{% block previous_page_url %} 
+    {% url 'blog:author' author.username page_obj.previous_page_number %}
+{% endblock%}
+
+{% block range_1 %}
+    {% url 'blog:author' author.username i %}
+{% endblock %}
+
+{% block range_2 %}
+    {% url 'blog:author' author.username i %}
+{% endblock %}
+
+{% block next_page_url %}
+    {% url 'blog:author' author.username page_obj.next_page_number %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'blog/list.html' %}
+{% block title %}
+جستجو | {{search}}    
+{% endblock %}
+
+{% block header %}
+<!-- page header
+        ================================================== -->
+        <div class="s-pageheader">
+            <div class="row">
+                <div class="column large-12">
+                    <h1 class="page-title">
+                        <span class="page-title__small-type" style="font-size:30px;">جستجو : {{ search }}</span><br>
+                    </h1>
+                </div>
+            </div>
+        </div> 
+<!-- end s-pageheader-->
+{% endblock %}
+
+
+
+{% block previous_page_url %} 
+    {% url 'blog:search' page_obj.previous_page_number %}?q={{search}}
+{% endblock%}
+
+{% block range_1 %}
+    {% url 'blog:search' i %}?q={{search}}
+{% endblock %}
+
+{% block range_2 %}
+    {% url 'blog:search' i %}?q={{search}}
+{% endblock %}
+
+{% block next_page_url %}
+    {% url 'blog:search' page_obj.next_page_number %}?q={{search}}
+{% endblock %}

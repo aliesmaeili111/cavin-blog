@@ -1,0 +1,78 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+{% block title %}
+| {{article.title|truncatewords:5}}
+{% endblock %}
+
+{% block main %}
+       <!-- content
+    ================================================== -->
+    <section class="s-content">
+
+        <div class="row">
+            <div class="column large-12">
+            
+                <article class="s-content__entry">
+
+                    <div class="s-content__media">
+                        <img src="{{object.thumbnail.url}}" width="100%"
+                                srcset="{{object.thumbnail.url}} 2100w, 
+                                        {{object.thumbnail.url}} 1050w, 
+                                        {{object.thumbnail.url}} 525w" sizes="(max-width: 2100px) 100vw, 2100px" alt="{{object.title}}">
+                                        <small>{{ object.jpublish }}</small>
+                                        
+                    </div> <!-- end s-content__media -->
+
+                    
+               
+                    <div class="s-content__entry-header">
+                       
+                                <h1 class="s-content__title">
+                                    {{ object.title }}
+                                    {% if article.is_special %}
+
+                                    <span style="background-color: #4a66e4;color:#fffff0;opacity: 0.5;outline: 0;border: 0;border-radius: 5px;">(ویژه)</span>
+            
+                                {% endif %}
+                                </h1>
+                        
+                    </div> <!-- end s-content__entry-header -->
+
+                    <div class="s-content__primary">
+
+                        <div class="s-content__page-content">
+
+                            <p class="lead">
+                                {% if object.is_special %}
+                                {% if user.is_authenticated and user.is_special or user == object.author or user.is_superuser %}
+                                    {{object.description|safe}}
+                                {% else %}
+                                    {{article.description|striptags|truncatewords:30}}
+                                <p class="lead">
+                                    این مقاله ویژه است   برای مشاهده ان باید اشتراک ویژه تهیه کنید
+                                </p>
+                                {% endif %}
+                            {% else %}
+                                {{object.description|safe}}
+                            {% endif %}
+                                
+                            </p>
+                        
+                            <br>
+                          
+                        </div> <!-- end s-entry__page-content -->
+
+                    </div> <!-- end s-content__primary -->
+                </article> <!-- end entry -->
+
+            </div> <!-- end column -->
+        </div> <!-- end row -->
+
+          
+    
+    </section> <!-- end s-content -->
+
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'blog/list.html' %}
+{% block title %}
+  | دسته بندی:  {{category.title}}
+{% endblock %}
+{% block header %}
+<!-- page header
+        ================================================== -->
+        <div class="s-pageheader">
+            <div class="row">
+                <div class="column large-12">
+                    <h1 class="page-title">
+                        <span class="page-title__small-type" style="font-size:30px;">دسته بندی : <a href="{% url 'blog:category' category.slug %}">{{category.title}}</a></span><br>
+                    </h1>
+                </div>
+            </div>
+        </div> 
+<!-- end s-pageheader-->
+{% endblock %}
+
+
+
+{% block previous_page_url %} 
+    {% url 'blog:category' category.slug page_obj.previous_page_number %}
+{% endblock%}
+
+{% block range_1 %}
+    {% url 'blog:category' category.slug i %}
+{% endblock %}
+
+{% block range_2 %}
+    {% url 'blog:category' category.slug i %}
+{% endblock %}
+
+{% block next_page_url %}
+    {% url 'blog:category' category.slug page_obj.next_page_number %}
+{% endblock %}

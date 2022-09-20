@@ -1,0 +1,18 @@
+@font-face {
+    font-family: 'Tanha';
+    src: url(Tanha.woff);
+}
+@font-face {
+    font-family: 'Tanha';
+    src: url(Tanha.ttf);
+}
+
+*{
+    text-align: right !important;
+    direction: rtl !important;
+    font-family: 'Tanha' !important;
+}
+
+.errors{
+    color: red;   
+}

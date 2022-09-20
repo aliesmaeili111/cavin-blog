@@ -1,0 +1,105 @@
+{% extends 'registration/base.html' %}
+
+{% block title %}
+{% block title-meta %}
+
+          لیست مقالات
+{% endblock %}
+{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title text-primary text-lg" style="float: right;">لیست مقالات</h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 300px;">
+          {% if object_list %}
+            <table class="table table-head-fixed">
+              <thead>
+                <tr>
+                  <th>عنوان</th>
+                  <th>تصویر</th>
+                  <th>دسته بندی</th>
+                  <th>نویسنده</th>
+                  <th>خلاصه</th>
+                  <th>زمان انتشار</th>
+                  <th>مقاله ویژه</th>
+                  <th>وضعیت</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for article in object_list %}
+                  <tr>
+                      <td>
+                        {% if article.status in 'bd'|make_list or user.is_superuser %}
+              
+                            <a href="{% url 'account:article-update' article.pk %}">
+                              {{article.title}}
+                            </a>
+                        {% else %}
+                          {{article.title}}  
+                        {% endif %}
+                        </td>
+                      <td>
+                          <img src="{{article.thumbnail.url}}" width="100px" alt="{{article.title}}">
+                          
+                      </td>
+                  
+                      <td>{{article.category_to_str}}</td>
+                      <td> <small>{{article.author.get_full_name}}</small> </td>
+                      <td>{{article.description|safe|truncatewords:5}}</td>
+                  
+                      <td><small>{{article.jpublish}}</small></td>
+                      <td>
+                        {% if article.is_special %}
+                          
+                          <span class="text-success">بله</span>
+                        {% else %}
+                          <span class="text-danger">خیر</span>
+                              
+                        {% endif %}
+                      
+                      </td>
+                  
+                      <td>
+                        {% if article.status == 'p' %}
+                        <span class="badge bg-success">منتشر شده</span><br>
+                        <a target="_blank" class="badge bg-primary" href="{% url 'blog:detail' article.slug %}">نمایش </a>
+                        {% elif article.status == 'i' %}
+                        <span class="badge bg-info "> در حال بررسی</span><br>
+                        {% if user.is_superuser %}
+                            <a target="_blank" class="badge bg-secondary" href="{% url 'blog:preview' article.pk %}">پیش نمایش</a>
+                        {% endif %}
+                        {% else %} 
+                        {% if article.status == 'd' %}
+                          <span class="badge bg-danger text-white ">پیش نویس</span>              
+                          <br>
+                        {% else %}
+                        <span class="badge bg-warning"> برگشت داده شد</span>              
+                        <br>
+                        {% endif %}
+                            <a target="_blank" class="badge badge-secondary" href="{% url 'blog:preview' article.pk %}">پیش نمایش</a>
+                        {% endif %}
+
+                        {% if user.is_superuser %}
+                          <a class="badge badge-light text-danger" href="{% url 'account:article-delete' article.pk %}"> حذف </a>
+                        {% endif %}
+                      </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+              <h4 class="text-center text-primary">محتوایی برای نمایش وجود ندارد</h4>
+          {% endif %}
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endblock %}
